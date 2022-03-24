@@ -25,4 +25,8 @@ public class Post extends BaseEntity {
 
     @OneToMany(mappedBy = "post")
     private List<Reply> replies = new ArrayList<>();
+
+    public void update(Post post) {
+        this.content = post.getContent();
+    }
 }

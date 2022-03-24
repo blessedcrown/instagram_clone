@@ -16,25 +16,54 @@ $: modalWidth = modalHeight / 1.0625;
 
 let avatar;
 let fileinput;
-let isFileChosen = false;
+let fileUploadStatus = {
+    'upload': true,
+    'adjust': false,
+    'filter': false,
+    'post': false
+}
 
 function onFileSelected(e) {
     let image = e.target.files[0];
     let reader = new FileReader();
     reader.readAsDataURL(image);
     reader.onload = e => {
-        avatar = e.target.result
-        isFileChosen = true;
+        avatar = e.target.result;
+
+        setStatusToFalse();
+        fileUploadStatus.adjust = true;
     };
+}
+
+function onFilterStart() {
+    setStatusToFalse();
+    fileUploadStatus.filter = true;
+}
+
+function setStatusToFalse() {
+    Object.entries(fileUploadStatus).forEach(([key, value]) => {
+        fileUploadStatus[key] = false;
+    })
 }
 </script>
 
 <svelte:window bind:innerWidth={windowWidth} bind:innerHeight={windowHeight} />
 <div class="modal" style='width: {modalWidth}px; height: {modalHeight}px' bind:clientHeight={modalHeight}>
-    {#if isFileChosen}
+    {#if fileUploadStatus.adjust }
     <div class="modal__top--alt">
         <i class="fas fa-arrow-left modal__arrow"></i>
         <h4 class="modal__title">자르기</h4>
+        <p class="modal__next-text" on:click={() => onFilterStart()}>다음</p>
+    </div>
+
+    <div class="modal__content">
+        <!-- svelte-ignore a11y-img-redundant-alt -->
+        <img class="modal__avatar" src="{avatar}" alt="uploaded image" />
+    </div>
+    {:else if fileUploadStatus.filter }
+    <div class="modal__top--alt">
+        <i class="fas fa-arrow-left modal__arrow"></i>
+        <h4 class="modal__title">편집</h4>
         <p class="modal__next-text">다음</p>
     </div>
 

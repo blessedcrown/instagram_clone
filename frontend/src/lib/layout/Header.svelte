@@ -12,7 +12,11 @@ const showModal = () => open(CreateModal, {}, {
   styleWindowWrap: {height: '100%', margin: '80px', display: 'flex', justifyContent: 'center', alignItems: 'center'},
   styleWindow: { width: 'auto', height: 'max-content' },
   styleContent: {width: '100%', padding: '0px', display: 'flex', alignItems: 'center'},
-  styleBg: {background: 'rgb(0,0,0,0.85)'}
+  styleBg: {background: 'rgb(0,0,0,0.85)'},
+}, {
+    onClose: () => {
+        alert("closing!");
+    }
 });
 
 // Change header icon 

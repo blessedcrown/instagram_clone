@@ -2,9 +2,7 @@ package com.instagram.clone.domain.post.entity;
 
 import com.instagram.clone.domain.BaseEntity;
 import com.instagram.clone.domain.reply.entity.Reply;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,6 +10,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Entity
 public class Post extends BaseEntity {
@@ -24,7 +23,7 @@ public class Post extends BaseEntity {
     private String content;
 
     @OneToMany(mappedBy = "post")
-    private List<Reply> replies = new ArrayList<>();
+    private final List<Reply> replies = new ArrayList<>();
 
     public void update(Post post) {
         this.content = post.getContent();

@@ -5,9 +5,9 @@ import com.instagram.clone.domain.post.entity.Post;
 
 public interface PostService {
 
-    public Long create(PostDto.CreateRequest request);
+    public Post create(PostDto.CreateRequest request);
 
-    public Long update(PostDto.UpdateRequest request, Long id) throws Exception;
+    public Post update(PostDto.UpdateRequest request, Long id) throws Exception;
 
     public Post findById(Long id) throws Exception;
 

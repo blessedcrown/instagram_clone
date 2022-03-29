@@ -18,17 +18,17 @@ public class PostServiceImpl implements PostService{
     private final PostRepository postRepository;
 
     @Override
-    public Long create(PostDto.CreateRequest request) {
+    public Post create(PostDto.CreateRequest request) {
         Post saved = postRepository.save(postMapper.toEntity(request));
-        return saved.getId();
+        return saved;
     }
 
     @Override
-    public Long update(PostDto.UpdateRequest request, Long id) throws Exception {
+    public Post update(PostDto.UpdateRequest request, Long id) throws Exception {
         Post post = postRepository.findById(id).orElseThrow(() -> new Exception("not found"));
         Post toUpdate = postMapper.toEntity(request);
         post.update(toUpdate);
-        return id;
+        return post;
     }
 
     @Override

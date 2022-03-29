@@ -1,9 +1,6 @@
 package com.instagram.clone.domain.post.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -11,7 +8,7 @@ import java.time.LocalDateTime;
 @Component
 public abstract class PostDto {
 
-    @Getter
+    @Data
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
@@ -19,7 +16,7 @@ public abstract class PostDto {
         private String content;
     }
 
-    @Getter
+    @Data
     @Builder
     @AllArgsConstructor
     public static class CreateResponse {
@@ -28,7 +25,7 @@ public abstract class PostDto {
         private LocalDateTime createdDate;
     }
 
-    @Getter
+    @Data
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
@@ -37,7 +34,7 @@ public abstract class PostDto {
         private String content;
     }
 
-    @Getter
+    @Data
     @Builder
     @AllArgsConstructor
     public static class UpdateResponse {
@@ -46,7 +43,7 @@ public abstract class PostDto {
         private LocalDateTime lastModifiedDate;
     }
 
-    @Getter
+    @Data
     @Builder
     @AllArgsConstructor
     public static class DetailResponse {

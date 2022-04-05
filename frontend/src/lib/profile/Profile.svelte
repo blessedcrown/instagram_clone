@@ -1,18 +1,25 @@
 <script>
-
+export let name = "default name";
+export let description = true;
 </script>
 
 <div class="profile">
   <div>
     <img class="profile__image" src="images/dog3.jpg" alt="cat">
   </div>
+  {#if description}
   <div class="profile__name-container">
-    <p class="profile__name">thegolden</p>
-    <p class="profile__status">thegolden님이 팔로우합니다</p>
+    <p class="profile__name">{name}</p>
+    <p class="profile__status">{name}님이 팔로우합니다</p>
   </div>
   <div>
     <a href="./" class="profile__link">팔로우</a>
   </div>
+  {:else}
+  <div class="profile__name-container">
+    <p class="profile__name">{name}</p>
+  </div>
+  {/if}
 </div>
 
 <style>

@@ -1,11 +1,5 @@
 <script>
-// Track which stage the modal is in
-let modalStatus = {
-    'upload': true,
-    'adjust': false,
-    'filter': false,
-    'post': false
-}
+import Profile from '$lib/profile/Profile.svelte';
 
 // Adjust modal size when window resize
 let windowWidth;
@@ -14,9 +8,17 @@ let windowHeight;
 $: modalHeight = windowWidth > windowHeight * 1.168 ? windowHeight - 200 : (windowHeight - 200) - ((windowHeight * 1.168) - windowWidth);
 $: modalWidth = modalHeight / 1.0625;
 
+// Enum for modal status
+const Status = Object.freeze({
+    UPLOAD: 'upload',
+    ADJUST: 'adjust',
+    FILTER: 'filter',
+    POST: 'post'
+});
+
 let avatar;
 let fileinput;
-let fileUploadStatus = {
+let modalStatus = {
     'upload': true,
     'adjust': false,
     'filter': false,
@@ -30,53 +32,26 @@ function onFileSelected(e) {
     reader.onload = e => {
         avatar = e.target.result;
 
-        setStatusToFalse();
-        fileUploadStatus.adjust = true;
+        setModalStatus(Status.ADJUST);
     };
 }
 
-function onFilterStart() {
-    setStatusToFalse();
-    fileUploadStatus.filter = true;
-}
-
-function setStatusToFalse() {
-    Object.entries(fileUploadStatus).forEach(([key, value]) => {
-        fileUploadStatus[key] = false;
+function setModalStatus(status) {
+    Object.entries(modalStatus).forEach(([key, value]) => {
+        modalStatus[key] = false;
     })
+    modalStatus[status] = true;
 }
 </script>
 
 <svelte:window bind:innerWidth={windowWidth} bind:innerHeight={windowHeight} />
 <div class="modal" style='width: {modalWidth}px; height: {modalHeight}px' bind:clientHeight={modalHeight}>
-    {#if fileUploadStatus.adjust }
-    <div class="modal__top--alt">
-        <i class="fas fa-arrow-left modal__arrow"></i>
-        <h4 class="modal__title">자르기</h4>
-        <p class="modal__next-text" on:click={() => onFilterStart()}>다음</p>
-    </div>
-
-    <div class="modal__content">
-        <!-- svelte-ignore a11y-img-redundant-alt -->
-        <img class="modal__avatar" src="{avatar}" alt="uploaded image" />
-    </div>
-    {:else if fileUploadStatus.filter }
-    <div class="modal__top--alt">
-        <i class="fas fa-arrow-left modal__arrow"></i>
-        <h4 class="modal__title">편집</h4>
-        <p class="modal__next-text">다음</p>
-    </div>
-
-    <div class="modal__content">
-        <!-- svelte-ignore a11y-img-redundant-alt -->
-        <img class="modal__avatar" src="{avatar}" alt="uploaded image" />
-    </div>
-    {:else}
+    {#if modalStatus.upload }
     <div class="modal__top">
         <h4 class="modal__title">새 게시물 만들기</h4>
     </div>
 
-    <div class="modal__content">
+    <div class="modal__content--alt">
         <img src="svg/media.svg" class="modal__icon" alt="video and images icon"/>
         <h2 class="modal__text">사진과 동영상을 여기에 끌어다 놓으세요</h2>
 
@@ -85,6 +60,98 @@ function setStatusToFalse() {
             accept="image/jpeg, image/png, image/heic, image/heif, video/mp4, video/quicktime" 
             on:change={(e)=>onFileSelected(e)}
             bind:this={fileinput}/>
+    </div>
+    {:else if modalStatus.adjust }
+    <div class="modal__top--alt">
+        <i class="fas fa-arrow-left modal__arrow"></i>
+        <h4 class="modal__title">자르기</h4>
+        <p class="modal__next-text" on:click={() => setModalStatus(Status.FILTER)}>다음</p>
+    </div>
+
+    <div class="modal__content">
+        <img class="modal__avatar" src="{avatar}" alt="uploading file" />
+    </div>
+    {:else if modalStatus.filter}
+    <div class="modal__top--alt">
+        <i class="fas fa-arrow-left modal__arrow"></i>
+        <h4 class="modal__title">편집</h4>
+        <p class="modal__next-text" on:click={() => setModalStatus(Status.POST)}>다음</p>
+    </div>
+
+    <div class="modal__content">
+        <img class="modal__avatar" src="{avatar}" alt="uploading file" />
+        <div class="modal__side">
+            <div class="filter__top">
+                <div class="filter__menu">필터</div>
+                <div class="filter__menu">조정</div>
+            </div>
+            <div class="filter__list">
+                <div class="filter__image">
+                    <img alt="filter effect"/>
+                    <p class="filter__text">원본</p>
+                </div>
+                <div class="filter__image">
+                    <img alt="filter effect"/>
+                    <p class="filter__text">Clarendon</p>
+                </div>
+                <div class="filter__image">
+                    <img alt="filter effect"/>
+                    <p class="filter__text">Gingham</p>
+                </div>
+                <div class="filter__image">
+                    <img alt="filter effect"/>
+                    <p class="filter__text">Moon</p>
+                </div>
+                <div class="filter__image">
+                    <img alt="filter effect"/>
+                    <p class="filter__text">Lark</p>
+                </div>
+                <div class="filter__image">
+                    <img alt="filter effect"/>
+                    <p class="filter__text">Reyes</p>
+                </div>
+                <div class="filter__image">
+                    <img alt="filter effect"/>
+                    <p class="filter__text">Juno</p>
+                </div>
+                <div class="filter__image">
+                    <img alt="filter effect"/>
+                    <p class="filter__text">Slumber</p>
+                </div>
+                <div class="filter__image">
+                    <img alt="filter effect"/>
+                    <p class="filter__text">Crema</p>
+                </div>
+                <div class="filter__image">
+                    <img alt="filter effect"/>
+                    <p class="filter__text">Ludwig</p>
+                </div>
+                <div class="filter__image">
+                    <img alt="filter effect"/>
+                    <p class="filter__text">Aden</p>
+                </div>
+                <div class="filter__image">
+                    <img alt="filter effect"/>
+                    <p class="filter__text">Perpetua</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {:else if modalStatus.post}
+    <div class="modal__top--alt">
+        <i class="fas fa-arrow-left modal__arrow"></i>
+        <h4 class="modal__title">새 게시물 만들기</h4>
+        <p class="modal__next-text">공유하기</p>
+    </div>
+
+    <div class="modal__content">
+        <img class="modal__avatar" src="{avatar}" alt="uploading file" />
+        <div class="modal__side">
+            <Profile description={false} name={"Zerro"}></Profile>
+            <div class="">
+
+            </div>
+        </div>
     </div>
     {/if}
 </div>
@@ -137,7 +204,42 @@ function setStatusToFalse() {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.modal__content--alt {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     flex-direction: column;
+}
+.modal__side {
+    width: 340px;
+}
+.filter__top {
+    display: flex;
+}
+.filter__menu {
+    width: 100%;
+    height: 50px;
+    border-bottom: 1px solid rgb(38,38,38);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+}
+.filter__list {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+.filter__image {
+    width: 88px;
+    height: 88px;
+}
+.filter__text {
+    color: rgba(0,149,246,1);
+    font-size: 12px;
+    line-height: 16px;
 }
 .modal__title {
     font-size: 16px;

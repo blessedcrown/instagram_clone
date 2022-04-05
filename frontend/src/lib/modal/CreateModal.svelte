@@ -45,8 +45,9 @@ function setModalStatus(status) {
 </script>
 
 <svelte:window bind:innerWidth={windowWidth} bind:innerHeight={windowHeight} />
-<div class="modal" style='width: {modalWidth}px; height: {modalHeight}px' bind:clientHeight={modalHeight}>
-    {#if modalStatus.upload }
+<!-- <div class="modal" style='width: {modalWidth}px; height: {modalHeight}px' bind:clientHeight={modalHeight}> -->
+{#if modalStatus.upload }
+<div class="modal">
     <div class="modal__top">
         <h4 class="modal__title">새 게시물 만들기</h4>
     </div>
@@ -61,9 +62,11 @@ function setModalStatus(status) {
             on:change={(e)=>onFileSelected(e)}
             bind:this={fileinput}/>
     </div>
-    {:else if modalStatus.adjust }
+</div>
+{:else if modalStatus.adjust }
+<div class="modal">
     <div class="modal__top--alt">
-        <i class="fas fa-arrow-left modal__arrow"></i>
+        <i class="fas fa-arrow-left modal__arrow" on:click={() => setModalStatus(Status.UPLOAD)}></i>
         <h4 class="modal__title">자르기</h4>
         <p class="modal__next-text" on:click={() => setModalStatus(Status.FILTER)}>다음</p>
     </div>
@@ -71,9 +74,11 @@ function setModalStatus(status) {
     <div class="modal__content">
         <img class="modal__avatar" src="{avatar}" alt="uploading file" />
     </div>
-    {:else if modalStatus.filter}
+</div>
+{:else if modalStatus.filter}
+<div class="modal">
     <div class="modal__top--alt">
-        <i class="fas fa-arrow-left modal__arrow"></i>
+        <i class="fas fa-arrow-left modal__arrow" on:click={() => setModalStatus(Status.ADJUST)}></i>
         <h4 class="modal__title">편집</h4>
         <p class="modal__next-text" on:click={() => setModalStatus(Status.POST)}>다음</p>
     </div>
@@ -137,9 +142,11 @@ function setModalStatus(status) {
             </div>
         </div>
     </div>
-    {:else if modalStatus.post}
+</div>
+{:else if modalStatus.post}
+<div class="modal">
     <div class="modal__top--alt">
-        <i class="fas fa-arrow-left modal__arrow"></i>
+        <i class="fas fa-arrow-left modal__arrow" on:click={() => setModalStatus(Status.FILTER)}></i>
         <h4 class="modal__title">새 게시물 만들기</h4>
         <p class="modal__next-text">공유하기</p>
     </div>
@@ -153,8 +160,8 @@ function setModalStatus(status) {
             </div>
         </div>
     </div>
-    {/if}
 </div>
+{/if}
 
 <style>
 .modal {

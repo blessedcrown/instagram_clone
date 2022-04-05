@@ -22,6 +22,7 @@ public class PostMapper {
         return PostDto.CreateResponse.builder()
                 .id(post.getId())
                 .content(post.getContent())
+                //TODO File Handler 구현
                 .build();
     }
 

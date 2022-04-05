@@ -1,6 +1,7 @@
 package com.instagram.clone.domain.post.entity;
 
 import com.instagram.clone.domain.BaseEntity;
+import com.instagram.clone.domain.picture.entity.Picture;
 import com.instagram.clone.domain.reply.entity.Reply;
 import lombok.*;
 
@@ -24,6 +25,9 @@ public class Post extends BaseEntity {
 
     @OneToMany(mappedBy = "post")
     private final List<Reply> replies = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post")
+    private final List<Picture> pictures = new ArrayList<>();
 
     public void update(Post post) {
         this.content = post.getContent();

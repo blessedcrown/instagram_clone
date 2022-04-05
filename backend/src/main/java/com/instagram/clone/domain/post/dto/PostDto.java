@@ -2,8 +2,10 @@ package com.instagram.clone.domain.post.dto;
 
 import lombok.*;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Component
 public abstract class PostDto {
@@ -14,6 +16,7 @@ public abstract class PostDto {
     @Builder
     public static class CreateRequest {
         private String content;
+        private List<MultipartFile> files;
     }
 
     @Data
@@ -23,6 +26,7 @@ public abstract class PostDto {
         private Long id;
         private String content;
         private LocalDateTime createdDate;
+        private List<MultipartFile> files;
     }
 
     @Data
@@ -32,6 +36,7 @@ public abstract class PostDto {
     public static class UpdateRequest {
         private Long id;
         private String content;
+        private List<MultipartFile> files;
     }
 
     @Data
@@ -41,6 +46,7 @@ public abstract class PostDto {
         private Long id;
         private String content;
         private LocalDateTime lastModifiedDate;
+        private List<MultipartFile> files;
     }
 
     @Data
@@ -51,5 +57,6 @@ public abstract class PostDto {
         private String content;
         private LocalDateTime createdDate;
         private LocalDateTime lastModifiedDate;
+        private List<MultipartFile> files;
     }
 }

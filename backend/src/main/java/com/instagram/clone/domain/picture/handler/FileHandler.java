@@ -13,7 +13,7 @@ import java.util.List;
 //https://velog.io/@pyo-sh/Spring-Boot-%ED%8C%8C%EC%9D%BC%EC%9D%B4%EB%AF%B8%EC%A7%80-%EC%97%85%EB%A1%9C%EB%93%9C-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0
 @Component
 public class FileHandler {
-    public List<Picture> parseFileInfo(Long postId, List<MultipartFile> multipartFiles) {
+    public List<Picture> parseFileInfo(Long postId, List<MultipartFile> multipartFiles) throws Exception {
         List<Picture> pictureList = new ArrayList<>();
         if(multipartFiles.isEmpty()) return pictureList;
 
@@ -51,17 +51,18 @@ public class FileHandler {
                 String new_file_name = Long.toString(System.nanoTime()) + originalFileExtension;
                 // 생성 후 리스트에 추가
                 Picture picture = Picture.builder()
-                        .(boardID)
+
                         .original_file_name(multipartFile.getOriginalFilename())
                         .stored_file_path(path + "/" + new_file_name)
                         .file_size(multipartFile.getSize())
                         .build();
-                fileList.add(boardPicture);
+                pictureList.add(picture);
 
                 // 저장된 파일로 변경하여 이를 보여주기 위함
                 file = new File(absolutePath + path + "/" + new_file_name);
                 multipartFile.transferTo(file);
             }
         }
+        return pictureList;
     }
 }

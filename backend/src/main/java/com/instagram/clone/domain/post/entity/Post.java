@@ -23,13 +23,25 @@ public class Post extends BaseEntity {
     @Column(nullable = false)
     private String content;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany
+    @JoinColumn(name = "POST_ID")
     private final List<Reply> replies = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany
+    @JoinColumn(name = "POST_ID")
     private final List<Picture> pictures = new ArrayList<>();
 
     public void update(Post post) {
         this.content = post.getContent();
+    }
+
+    public void update(Post post, List<Picture> pictures) {
+        //TODO update 부분 구현 필요
+    }
+
+    public void attachPictures(List<Picture> pictures) {
+        for (Picture pic : pictures) {
+            this.pictures.add(pic);
+        }
     }
 }

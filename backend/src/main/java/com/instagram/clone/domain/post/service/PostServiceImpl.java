@@ -1,13 +1,17 @@
 package com.instagram.clone.domain.post.service;
 
+import com.instagram.clone.domain.picture.entity.Picture;
+import com.instagram.clone.domain.picture.handler.FileHandler;
 import com.instagram.clone.domain.post.dto.PostDto;
 import com.instagram.clone.domain.post.dto.PostMapper;
 import com.instagram.clone.domain.post.entity.Post;
 import com.instagram.clone.domain.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Transactional
@@ -16,10 +20,19 @@ public class PostServiceImpl implements PostService{
 
     private final PostMapper postMapper;
     private final PostRepository postRepository;
+    private final FileHandler fileHandler;
 
     @Override
-    public Post create(PostDto.CreateRequest request) {
-        Post saved = postRepository.save(postMapper.toEntity(request));
+    public Post create(PostDto.CreateRequest request) throws Exception {
+        Post post = postMapper.toEntity(request);
+        List<Picture> pictures = fileHandler.parseFileInfo(request.getFiles());
+        if (pictures.isEmpty()) {
+            //DTO에 nullable false 지정 해줘야 한다
+        }
+        else {
+            post.attachPictures(pictures);
+        }
+        Post saved = postRepository.save(post);
         return saved;
     }
 

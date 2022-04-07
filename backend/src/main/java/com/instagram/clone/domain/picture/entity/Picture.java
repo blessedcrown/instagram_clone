@@ -19,10 +19,6 @@ public class Picture {
     @Column(name = "PICTURE_ID")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "POST_ID")
-    private Post post;
-
     private String original_file_name;
     private String stored_file_path;
 

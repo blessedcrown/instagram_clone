@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/api/post", produces = "application/json; charset=UTF8")
+@RequestMapping(value = "/api/post", consumes = "multipart/form-data", produces = "application/json; charset=UTF8")
 public class PostController {
 
     private final PostService postService;
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody PostDto.CreateRequest request){
+    public ResponseEntity<?> create(@RequestBody PostDto.CreateRequest request) throws Exception {
         Post post = postService.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(post);
     }

@@ -1,13 +1,6 @@
 <script>
 import Profile from '$lib/profile/Profile.svelte';
 
-// Adjust modal size when window resize
-let windowWidth;
-let windowHeight;
-
-$: modalHeight = windowWidth > windowHeight * 1.168 ? windowHeight - 200 : (windowHeight - 200) - ((windowHeight * 1.168) - windowWidth);
-$: modalWidth = modalHeight / 1.0625;
-
 // Enum for modal status
 const Status = Object.freeze({
     UPLOAD: 'upload',
@@ -17,13 +10,14 @@ const Status = Object.freeze({
 });
 
 let avatar;
-let fileinput;
+let fileInput;
 let modalStatus = {
     'upload': true,
     'adjust': false,
     'filter': false,
     'post': false
 }
+let wideModalWidth = "1200px";
 
 function onFileSelected(e) {
     let image = e.target.files[0];
@@ -44,8 +38,6 @@ function setModalStatus(status) {
 }
 </script>
 
-<svelte:window bind:innerWidth={windowWidth} bind:innerHeight={windowHeight} />
-<!-- <div class="modal" style='width: {modalWidth}px; height: {modalHeight}px' bind:clientHeight={modalHeight}> -->
 {#if modalStatus.upload }
 <div class="modal">
     <div class="modal__top">
@@ -60,7 +52,7 @@ function setModalStatus(status) {
         <input type="file" style="display: none;" name="media" id="upload-media" 
             accept="image/jpeg, image/png, image/heic, image/heif, video/mp4, video/quicktime" 
             on:change={(e)=>onFileSelected(e)}
-            bind:this={fileinput}/>
+            bind:this={fileInput}/>
     </div>
 </div>
 {:else if modalStatus.adjust }
@@ -76,7 +68,7 @@ function setModalStatus(status) {
     </div>
 </div>
 {:else if modalStatus.filter}
-<div class="modal">
+<div class="modal" style:width={wideModalWidth}>
     <div class="modal__top--alt">
         <i class="fas fa-arrow-left modal__arrow" on:click={() => setModalStatus(Status.ADJUST)}></i>
         <h4 class="modal__title">편집</h4>
@@ -144,7 +136,7 @@ function setModalStatus(status) {
     </div>
 </div>
 {:else if modalStatus.post}
-<div class="modal">
+<div class="modal" style:width={wideModalWidth}>
     <div class="modal__top--alt">
         <i class="fas fa-arrow-left modal__arrow" on:click={() => setModalStatus(Status.FILTER)}></i>
         <h4 class="modal__title">새 게시물 만들기</h4>
@@ -166,9 +158,11 @@ function setModalStatus(status) {
 <style>
 .modal {
     margin: 0px;
-    height: 100%;
+    height: 700px;
+    width: 750px;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 .modal__top {
     width: 100%;
@@ -196,6 +190,9 @@ function setModalStatus(status) {
     padding: 8px;
     font-size: 24px;
 }
+.modal__arrow:hover {
+    cursor: pointer;
+}
 .modal__next-text {
     margin: 16px;
     color: var(--link-color);
@@ -221,7 +218,7 @@ function setModalStatus(status) {
     flex-direction: column;
 }
 .modal__side {
-    width: 340px;
+    width: 450px;
 }
 .filter__top {
     display: flex;
